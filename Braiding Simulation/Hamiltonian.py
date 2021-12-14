@@ -80,7 +80,7 @@ def Coupling_strength_Stenger(t, tau, d_min, d_max, parameter_path):
 def Hamiltonian(t, tau, d_min, d_max, parameter_path, system):
     d1, d2, d3 = Coupling_strength(t, tau, d_min, d_max, parameter_path, system)
 
-    if system == 'Beenaker':
+    if system == 'Beenakker':
         H = qml.Hamiltonian(
             [-d3, -d2, d1],
             [qml.Identity(0) @ qml.PauliZ(1), qml.PauliX(0) @ qml.PauliX(1), qml.PauliY(0) @ qml.PauliX(1)])
