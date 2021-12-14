@@ -1,6 +1,6 @@
 import pennylane as qml
 import Evolution
-import initialize
+import Initialize
 
 
 d_max, d_min = 0.99, 0.01
@@ -16,7 +16,7 @@ def circuit(parameter_path):
     elif parameter_path == 'tetrahedron':
         period_num = 3
 
-    initialize('minus')
+    Initialize.Initialize('minus')
 
     t = 0
     for i in range(period_num):
