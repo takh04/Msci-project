@@ -4,7 +4,7 @@ import Initialize
 
 dev1 = qml.device('default.qubit', wires=2)
 @qml.qnode(dev1)
-def circuit(tau, d_min, d_max, parameter_path, system, dt, state):
+def circuit(tau, d_min, d_max, parameter_path, system, N, state):
     if parameter_path == 'cube':
         period_num = 6
     elif parameter_path == 'tetrahedron':
@@ -12,6 +12,7 @@ def circuit(tau, d_min, d_max, parameter_path, system, dt, state):
 
     Initialize.initialize(state, d_min, d_max, system)
 
+    dt = tau / N
     for k in range(2):
         t = 0
         for i in range(period_num):
