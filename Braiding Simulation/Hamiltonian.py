@@ -57,36 +57,41 @@ def Coupling_strength_Beenakker(t, tau, d_min, d_max, parameter_path):
 
 def Coupling_strength_Stenger(t, tau, d_min, d_max, parameter_path):
     # tetrahedral path in parameter space
+    # d1 = J01, d2 = J12, d3 = J20
     if parameter_path == 'tetrahedron':
         if t == 0:
-            d1, d2, d3 = d_min, d_min, d_max
+            d1, d2, d3 = d_max, d_min, d_min
         elif t < tau:
             d2 = d_min
-            d1 = d_min + (d_max - d_min) * t / tau
-            d3 = d_max - (d_max - d_min) * t / tau
+            d3 = d_min + (d_max - d_min) * t / tau
+            d1 = d_max - (d_max - d_min) * t / tau
         elif t < 2 * tau:
-            d3 = d_min
-            d1 = d_max - (d_max - d_min) * (t - tau) / tau
-            d2 = d_min + (d_max - d_min) * (t - tau) / tau
-        elif t < 3 * tau:
             d1 = d_min
-            d2 = d_max - (d_max - d_min) * (t - 2 * tau) / tau
-            d3 = d_min + (d_max - d_min) * (t - 2 * tau) / tau
+            d2 = d_max - (d_max - d_min) * (t - tau) / tau
+            d3 = d_min + (d_max - d_min) * (t - tau) / tau
+        elif t < 3 * tau:
+            d2 = d_min
+            d3 = d_max - (d_max - d_min) * (t - 2 * tau) / tau
+            d1 = d_min + (d_max - d_min) * (t - 2 * tau) / tau
         elif t == 3 * tau:
-            d1, d2, d3 = d_min, d_min, d_max
-
+            d1, d2, d3 = d_max, d_min, d_min
     return d1, d2, d3
 
-def Hamiltonian(t, tau, d_min, d_max, parameter_path, system):
+def Hamiltonian(t, tau, a, d_min, d_max, parameter_path, system):
     d1, d2, d3 = Coupling_strength(t, tau, d_min, d_max, parameter_path, system)
 
     if system == 'Beenakker':
         H = qml.Hamiltonian(
             [-d3, -d2, d1],
             [qml.Identity(0) @ qml.PauliZ(1), qml.PauliX(0) @ qml.PauliX(1), qml.PauliY(0) @ qml.PauliX(1)])
+        return H
     elif system == 'Stenger':
-        H = qml.Hamiltonian(
-            [],
-            []
-        )
-    return H
+        Heven = qml.Hamiltonian(
+            [a, a, a, d1, d2, d3],
+            [qml.PauliZ(0) @ qml.PauliZ(1), qml.Identity(0) @ qml.PauliZ(1), qml.PauliZ(0) @ qml.Identity(1),
+             qml.PauliY(0) @ qml.PauliX(1), qml.Identity(0) @ qml.PauliY(1), qml.PauliY(0) @ qml.PauliZ(1)])
+        Hodd = qml.Hamiltonian(
+            [-a, a, a, d1, d2, -d3],
+            [qml.PauliZ(0) @ qml.PauliZ(1), qml.Identity(0) @ qml.PauliZ(1), qml.PauliZ(0) @ qml.Identity(1),
+             qml.PauliY(0) @ qml.PauliX(1), qml.Identity(0) @ qml.PauliY(1), qml.PauliY(0) @ qml.PauliZ(1)])
+        return Heven, Hodd

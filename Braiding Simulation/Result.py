@@ -5,6 +5,11 @@ tau = 1
 N = 10
 parameter_path = 'cube'
 system = 'Beenakker'
-state = 'minus'
+state = 'plus'
+print("Even state")
+probs = Simulate.circuit(tau, d_min, d_max, parameter_path, system, N, state)
+print(probs)
+print("Odd state")
+state= 'minus'
 probs = Simulate.circuit(tau, d_min, d_max, parameter_path, system, N, state)
 print(probs)
