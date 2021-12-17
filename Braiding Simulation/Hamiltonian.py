@@ -1,14 +1,18 @@
 import pennylane as qml
 import pennylane.numpy as np
+import Parameters
 
-def Coupling_strength(t, tau, d_min, d_max, parameter_path, system):
+a, d_min, d_max, N, tau = Parameters.a, Parameters.d_min, Parameters.d_max, Parameters.N, Parameters.tau
+parameter_path, system, initial_state = Parameters.parameter_path, Parameters.system, Parameters.initial_state
+
+def Coupling_strength(t):
     if system == 'Beenakker':
-        d1 ,d2, d3 = Coupling_strength_Beenakker(t, tau, d_min, d_max, parameter_path)
+        d1 ,d2, d3 = Coupling_strength_Beenakker(t)
     elif system == 'Stenger':
-        d1, d2, d3 = Coupling_strength_Stenger(t, tau, d_min, d_max, parameter_path)
+        d1, d2, d3 = Coupling_strength_Stenger(t)
     return d1, d2, d3
 
-def Coupling_strength_Beenakker(t, tau, d_min, d_max, parameter_path):
+def Coupling_strength_Beenakker(t):
     # Cubic path in a parameter space
     if parameter_path == 'cube':
         if t == 0:
@@ -55,7 +59,7 @@ def Coupling_strength_Beenakker(t, tau, d_min, d_max, parameter_path):
     return d1, d2, d3
 
 
-def Coupling_strength_Stenger(t, tau, d_min, d_max, parameter_path):
+def Coupling_strength_Stenger(t):
     # tetrahedral path in parameter space
     # d1 = J01, d2 = J12, d3 = J20
     if parameter_path == 'tetrahedron':
@@ -77,8 +81,8 @@ def Coupling_strength_Stenger(t, tau, d_min, d_max, parameter_path):
             d1, d2, d3 = d_max, d_min, d_min
     return d1, d2, d3
 
-def Hamiltonian(t, tau, a, d_min, d_max, parameter_path, system):
-    d1, d2, d3 = Coupling_strength(t, tau, d_min, d_max, parameter_path, system)
+def Hamiltonian(t):
+    d1, d2, d3 = Coupling_strength(t)
 
     if system == 'Beenakker':
         H = qml.Hamiltonian(
