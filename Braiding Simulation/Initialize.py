@@ -16,17 +16,17 @@ def initialize_Beenakker():
     d1, d2, d3 = d_min, d_min, d_max
     d = (d1**2 + d2**2 + d3**2)**(1/2)
 
-    # Even and Odd ground state without normalization
+    # Even and Odd ground state
     statevector_even = np.array([1j * (d + d3), 0, 0, d1 + 1j * d2])
+    statevector_even = statevector_even / np.linalg.norm(statevector_even)
     statevector_odd = np.array([0, 1j * (d - d3), d1 + 1j * d2, 0])
+    statevector_odd = statevector_odd / np.linalg.norm(statevector_odd)
 
     if initial_state == 'even':
-        statevector = statevector_even / np.linalg.norm(statevector_even)
-        print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
+        print("Initial State is: \n" + str(np.reshape(statevector_even, (4, 1))))
 
     elif initial_state == 'odd':
-        statevector = statevector_odd / np.linalg.norm(statevector_odd)
-        print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
+        print("Initial State is: \n" + str(np.reshape(statevector_odd, (4, 1))))
 
     elif initial_state == 'even + odd':
         statevector = statevector_even + statevector_odd
