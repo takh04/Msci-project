@@ -7,12 +7,8 @@ parameter_path, system, initial_state = Parameters.parameter_path, Parameters.sy
 
 def Evolution(t):
     dt = tau / N
-    if system == 'Beenakker':
-        H = Hamiltonian.Hamiltonian(t)
-        qml.templates.ApproxTimeEvolution(H, dt, 1)
-    elif system == 'Stenger':
-        Heven, Hodd = Hamiltonian.Hamiltonian(t)
-        if initial_state == 'even':
-            qml.templates.ApproxTimeEvolution(Heven, dt, 1)
-        elif initial_state == 'odd':
-            qml.templates.ApproxTimeEvolution(Hodd, dt, 1)
+    Heven, Hodd = Hamiltonian.Hamiltonian(t)
+    if initial_state == 'even':
+        qml.templates.ApproxTimeEvolution(Heven, dt, 1)
+    elif initial_state == 'odd':
+        qml.templates.ApproxTimeEvolution(Hodd, dt, 1)
