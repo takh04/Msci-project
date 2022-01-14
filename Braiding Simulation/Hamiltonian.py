@@ -85,10 +85,16 @@ def Hamiltonian(t):
     d1, d2, d3 = Coupling_strength(t)
 
     if system == 'Beenakker':
-        H = qml.Hamiltonian(
-            [-d3, -d2, d1],
-            [qml.Identity(0) @ qml.PauliZ(1), qml.PauliX(0) @ qml.PauliX(1), qml.PauliY(0) @ qml.PauliX(1)])
-        return H
+        Heven = qml.Hamiltonian(
+            [-d2, d1, -d3],
+            [qml.PauliX(0), qml.PauliY(0), qml.PauliZ(0)]
+        )
+        Hodd = qml.Hamiltonian(
+            [-d2, d1, d3],
+            [qml.PauliX(0), qml.PauliY(0), qml.PauliZ(0)]
+        )
+        return Heven, Hodd
+
     elif system == 'Stenger':
         Heven = qml.Hamiltonian(
             [a, a, a, d1, d2, d3],
