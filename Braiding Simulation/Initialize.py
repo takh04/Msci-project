@@ -17,25 +17,21 @@ def initialize_Beenakker():
     d = (d1**2 + d2**2 + d3**2)**(1/2)
 
     # Even and Odd ground state
-    statevector_even = np.array([1j * (d + d3), 0, 0, d1 + 1j * d2])
+    statevector_even = np.array([1j * (d + d3), d1 + 1j * d2])
     statevector_even = statevector_even / np.linalg.norm(statevector_even)
-    statevector_odd = np.array([0, 1j * (d - d3), d1 + 1j * d2, 0])
+    statevector_odd = np.array([1j * (d - d3), d1 + 1j * d2])
     statevector_odd = statevector_odd / np.linalg.norm(statevector_odd)
 
     if initial_state == 'even':
-        print("Initial State is: \n" + str(np.reshape(statevector_even, (4, 1))))
+        statevector = statevector_even
+        print("Initial State is: \n" + str(np.reshape(statevector_even, (2, 1))))
 
     elif initial_state == 'odd':
-        print("Initial State is: \n" + str(np.reshape(statevector_odd, (4, 1))))
-
-    elif initial_state == 'even + odd':
-        statevector = statevector_even + statevector_odd
-        statevector = statevector / np.linalg.norm(statevector)
-        print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
-
+        statevector = statevector_odd
+        print("Initial State is: \n" + str(np.reshape(statevector_odd, (2, 1))))
     else:
         print("Non-valid initial state")
-    qml.templates.AmplitudeEmbedding(statevector, wires=[0,1], normalize=True)
+    qml.templates.AmplitudeEmbedding(statevector, wires=[0], normalize=True)
 
 
 def initialize_Stenger():
