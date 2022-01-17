@@ -16,4 +16,4 @@ tau = 1
 N = 10
 parameter_path = 'cube'
 system = 'Beenakker'
-initial_state = 'even + odd'
+initial_state = 'odd'
