@@ -38,6 +38,7 @@ def Coupling_strength_Beenakker(t):
         elif t == 6 * tau:
             d1, d2, d3 = d_min, d_min, d_max
 
+
     # tetrahedral path in a parameter space
     elif parameter_path == 'tetrahedron':
         if t == 0:
