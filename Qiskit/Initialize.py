@@ -4,13 +4,13 @@ import numpy as np
 a, d_min, d_max, N, tau = Parameters.a, Parameters.d_min, Parameters.d_max, Parameters.N, Parameters.tau
 parameter_path, system, initial_state = Parameters.parameter_path, Parameters.system, Parameters.initial_state
 
-def initialize(circuit):
+def initialize(circuit, qubit):
     if system == 'Beenakker':
-        initialize_Beenakker(circuit)
+        initialize_Beenakker(circuit, qubit)
     elif system == 'Stenger':
-        initialize_Stenger(circuit)
+        initialize_Stenger(circuit, qubit)
 
-def initialize_Beenakker(circuit):
+def initialize_Beenakker(circuit, qubit):
     d1, d2, d3 = d_min, d_min, d_max
     d = (d1**2 + d2**2 + d3**2)**(1/2)
 
@@ -29,10 +29,10 @@ def initialize_Beenakker(circuit):
         print("Initial State is: \n" + str(np.reshape(statevector_odd, (2, 1))))
     else:
         print("Non-valid initial state")
-    circuit.initialize(statevector)
+    circuit.initialize(statevector, qubit)
 
 
-def initialize_Stenger(circuit):
+def initialize_Stenger(circuit, qubit):
     d1, d2, d3 = d_max, d_min, d_min
     d = (d1**2 + d2**2 + d3**2)**(1/2)
     D = (d1**2 + d2**2 + d3**2 + 4 * a**2)
@@ -46,4 +46,4 @@ def initialize_Stenger(circuit):
         print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
     else:
         print("Non-valid initial state")
-    circuit.initialize(statevector)
+    circuit.initialize(statevector, qubit)
