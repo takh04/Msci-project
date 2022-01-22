@@ -1,3 +1,9 @@
+"""
+This module implements circuit level functions for Quantum Hamiltonian Simulation.
+The code is adapted from Davit Khachatryan, the detailed explanation and code implementations
+can be found in https://github.com/DavitKhach/quantum-algorithms-tutorials/blob/master/Hamiltonian_simulation.ipynb
+"""
+
 from qiskit import QuantumCircuit, QuantumRegister
 import numpy as np
 
@@ -26,7 +32,7 @@ def exp_all_z(circuit, quantum_register, pauli_idexes, control_qubit=None, t=1):
         circuit.cx(quantum_register[pauli_idexes[i]],
                    quantum_register[pauli_idexes[i + 1]])
 
-    # Rz gate
+    # RZ / Controlled RZ gate
     if control_qubit is None:
         circuit.rz(-2 * t, quantum_register[pauli_idexes[-1]])
     else:
