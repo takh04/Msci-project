@@ -85,14 +85,14 @@ def exp_pauli(pauli, quantum_register, control_qubit=None, t=1):
 def hamiltonian_simulation(hamiltonian, quantum_register=None, control_qubit=None,
                            t=1, trotter_number=1):
     """
-    The implementation of exp(iHt), where H is the Hamiltonian
+    The implementation of exp(-iHt), where H is the Hamiltonian
     operator, t is the parameter.
     :param hamiltonian: dictionary of Pauli terms with their weights:
                         e.g. {"XZX": 2, "ZYI": 5, "IYZ": 7}.
     :param quantum_register: QuantumRegister.
     :param control_qubit: the control Qubit from QuantumRegister
                           other than quantum_register.
-    :param t: the parameter t in exp(iHt).
+    :param t: the parameter t in exp(-iHt).
     :param trotter_number: the Trotter number.
     :return: QuantumCircuit that corresponds to exp(iHt)
              or control version of it.
@@ -103,7 +103,7 @@ def hamiltonian_simulation(hamiltonian, quantum_register=None, control_qubit=Non
     if control_qubit in quantum_register:
         raise Exception("the control qubit is in the target register")
 
-    delta_t = t / trotter_number
+    delta_t = -t / trotter_number
     exp_hamiltonian = QuantumCircuit(quantum_register)
     exp_delta_t = QuantumCircuit(quantum_register)
 
