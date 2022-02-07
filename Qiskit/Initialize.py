@@ -5,45 +5,66 @@ a, d_min, d_max, N, tau = Parameters.a, Parameters.d_min, Parameters.d_max, Para
 parameter_path, system, initial_state = Parameters.parameter_path, Parameters.system, Parameters.initial_state
 
 def initialize(circuit, qubit):
-    if system == 'Beenakker':
-        initialize_Beenakker(circuit, qubit)
-    elif system == 'Stenger':
-        initialize_Stenger(circuit, qubit)
+    if system == '4MZM':
+        initialize_4MZM(circuit, qubit)
+    elif system == '6MZM':
+        initialize_6MZM(circuit, qubit)
 
-def initialize_Beenakker(circuit, qubit):
+def initialize_4MZM(circuit, qubit):
     d1, d2, d3 = d_min, d_min, d_max
     d = (d1**2 + d2**2 + d3**2)**(1/2)
 
-    # Even and Odd ground state
-    statevector_even = np.array([1j * (d + d3), d1 + 1j * d2])
-    statevector_even = statevector_even / np.linalg.norm(statevector_even)
-    statevector_odd = np.array([1j * (d - d3), d1 + 1j * d2])
-    statevector_odd = statevector_odd / np.linalg.norm(statevector_odd)
+    # Even and Odd ground states
+    state_even_g = np.array([1j * (-d3 + d), d1 - 1j * d2])
+    state_even_g = state_even_g / np.linalg.norm(state_even_g)
+    state_odd_g = np.array([1j * (-d3 + d), d1 + 1j * d2])
+    state_odd_g = state_odd_g / np.linalg.norm(state_odd_g)
 
-    if initial_state == 'even':
-        statevector = statevector_even
-        print("Initial State is: \n" + str(np.reshape(statevector_even, (2, 1))))
+    # Even and Odd excited states
+    state_even_e1 = np.array([-1j * (d3 + d), d1 - 1j * d2])
+    state_even_e1 = state_even_e1 / np.linalg.norm(state_even_e1)
+    state_odd_e1 = np.array([-1j * (d3 + d), d1 + 1j * d2])
+    state_odd_e1 = state_odd_e1 / np.linalg.norm(state_odd_e1)
 
-    elif initial_state == 'odd':
-        statevector = statevector_odd
-        print("Initial State is: \n" + str(np.reshape(statevector_odd, (2, 1))))
-    else:
-        print("Non-valid initial state")
+    if initial_state == 'even ground':
+        statevector = state_even_g
+    elif initial_state == 'odd ground':
+        statevector = state_odd_g
+    elif initial_state == 'even e1':
+        statevector = state_even_e1
+    elif initial_state == 'odd e1':
+        statevector = state_odd_e1
+
+    print("Initial State is: \n" + str(np.reshape(statevector, (2, 1))))
     circuit.initialize(statevector, qubit)
 
 
-def initialize_Stenger(circuit, qubit):
+def initialize_6MZM(circuit, qubit):
     d1, d2, d3 = d_max, d_min, d_min
     d = (d1**2 + d2**2 + d3**2)**(1/2)
     D = (d1**2 + d2**2 + d3**2 + 4 * a**2)
-    if initial_state == 'even':
-        statevector = np.array([0, -(d1**2 + d3**2), d2 * d3 + 1j * d1 * d, d1 * d2 - 1j * d3 * d])
-        statevector = statevector / np.linalg.norm(statevector)
-        print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
-    elif initial_state == 'odd':
-        statevector = np.array([1j * d1, 1j * d3, 1j * d2, 2 * a + D])
-        statevector = statevector / np.linalg.norm(statevector)
-        print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
-    else:
-        print("Non-valid initial state")
+
+    # Even Ground State
+    state_even_g = np.array([0, -d1 ** 2 - d3 ** 2, d2 * d3 - 1j * d1 * d, d1 * d2 + 1j * d3 * d])
+    state_even_g = state_even_g / np.linalg.norm(state_even_g)
+    # Even Second Excited State
+    state_even_e2 = np.array([0, -d1 ** 2 - d3 ** 2, d2 * d3 + 1j * d1 * d, d1 * d2 - 1j * d3 * d])
+    state_even_e2 = state_even_e2 / np.linalg.norm(state_even_e2)
+    # Odd First Excited State
+    state_odd_e1 = np.array([d1 * d2 + 1j * d3 * d, d2 * d3 - 1j * d1 * d, -d1**2 - d3**2, 0])
+    state_odd_e1 = state_odd_e1 / np.linalg.norm(state_odd_e1)
+    # Odd Third Excited State
+    state_odd_e3 = np.array([d1 * d2 - 1j * d3 * d, d2 * d3 + 1j * d1 * d, -d1**2 - d3**2, 0])
+    state_odd_e3 = state_odd_e3 / np.linalg.norm(state_odd_e3)
+
+    if initial_state == 'even ground':
+        statevector = state_even_g
+    elif initial_state == 'even e2':
+        statevector = state_even_e2
+    elif initial_state == 'odd e1':
+        statevector = state_odd_e1
+    elif initial_state == 'even e3':
+        statevector = state_odd_e3
+
+    print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
     circuit.initialize(statevector, qubit)
