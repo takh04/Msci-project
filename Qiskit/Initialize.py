@@ -1,3 +1,9 @@
+"""
+This module initializes the initial eigenstates of the system. Possible initial states are,
+4MZM: 'even ground', 'odd ground', 'even e1', 'odd e1'
+6MZM: 'even ground', 'even e2', 'odd e1', 'odd e3'
+Uncoverd states have trivial berry phases.
+"""
 import Parameters
 import numpy as np
 
