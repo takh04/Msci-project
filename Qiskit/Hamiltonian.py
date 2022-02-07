@@ -62,11 +62,15 @@ def Hamiltonian(t):
     if system == '4MZM':
         Heven = {"X": d2, "Y": d1, "Z": d3}
         Hodd = {"X": -d2, "Y": d1, "Z": d3}
+        if initial_state in ['even ground', 'even e1']:
+            return Heven
+        elif initial_state in ['odd ground', 'odd e1']:
+            return Hodd
+
     elif system == '6MZM':
         Heven = {"ZZ": a, "IZ": a, "ZI": a, "XY": d1, "ZY": d2, "YI": d3}
         Hodd = {"ZZ": -a, "IZ": a, "ZI": a, "YX": d1, "IY": d2, "YZ": -d3}
-
-    if initial_state == 'even':
-        return Heven
-    elif initial_state == 'odd':
-        return Hodd
+        if initial_state in ['even ground', 'even e2']:
+            return Heven
+        elif initial_state in ['odd e1', 'odd e3']:
+            return Hodd
