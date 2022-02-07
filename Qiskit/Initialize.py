@@ -69,7 +69,7 @@ def initialize_6MZM(circuit, qubit):
         statevector = state_even_e2
     elif initial_state == 'odd e1':
         statevector = state_odd_e1
-    elif initial_state == 'even e3':
+    elif initial_state == 'odd e3':
         statevector = state_odd_e3
 
     print("Initial State is: \n" + str(np.reshape(statevector, (4, 1))))
