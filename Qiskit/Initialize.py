@@ -46,7 +46,7 @@ def initialize_4MZM(circuit, qubit):
 
 
 def initialize_6MZM(circuit, qubit):
-    d1, d2, d3 = d_max, d_min, d_min
+    d1, d2, d3 = d_min, d_min, d_max
     d = (d1**2 + d2**2 + d3**2)**(1/2)
     D = (d1**2 + d2**2 + d3**2 + 4 * a**2)
 
