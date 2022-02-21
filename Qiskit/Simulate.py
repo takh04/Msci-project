@@ -29,9 +29,9 @@ loops = Parameters.loops
 
 # Number of legs in Parameter space
 if parameter_path == 'cube':
-    period_num = 6
+    legs = 6
 elif parameter_path == 'tetrahedron':
-    period_num = 3
+    legs = 3
 
 # Number of qubits
 if system == '4MZM':
@@ -56,7 +56,7 @@ def circuit(phase_estimation=False):
     dt = tau / N
     for loop in range(loops):
         t = 0
-        for i in range(period_num):
+        for i in range(legs):
             for j in range(N):
                 H = Hamiltonian.Hamiltonian(t)
                 if phase_estimation:

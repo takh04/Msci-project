@@ -10,10 +10,11 @@ system: system (Hamiltonian) to simulate
 initial_state: initially prepared state. usually even or odd parity ground state of the Hamiltonian.
 """
 
-d_max, d_min = 0.99, 0.01
-a = 3
-tau = 1
-N = 1
-parameter_path = 'tetrahedron'
-system = 'Stenger'
-initial_state = 'odd'
+d_max, d_min = 0.9999, 0.0001
+a = 1
+tau = 50
+N = 700
+parameter_path = 'cube'
+system = '6MZM'
+initial_state = 'even ground'
+loops = 1

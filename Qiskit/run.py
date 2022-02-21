@@ -12,8 +12,8 @@ import Simulate
 
 a, d_min, d_max, N, tau = Parameters.a, Parameters.d_min, Parameters.d_max, Parameters.N, Parameters.tau
 parameter_path, system, initial_state = Parameters.parameter_path, Parameters.system, Parameters.initial_state
-real_device = True
-phase_estimation = False
+real_device = False
+phase_estimation = True
 save_circuit_diagram = False
 
 if real_device:
@@ -21,7 +21,7 @@ if real_device:
     provider = IBMQ.get_provider(hub='ibm-q', group='open')
     backend = provider.get_backend('ibmq_bogota')
 else:
-    backend = Aer.get_backend("statevector_simulator")
+    backend = Aer.get_backend("aer_simulator")
 circuit = Simulate.circuit(phase_estimation=phase_estimation)
 transpiled_circuit = transpile(circuit, backend=backend)
 
@@ -39,12 +39,6 @@ counts = result.get_counts()
 print(counts)
 
 if phase_estimation:
-    if counts['0'] == num_shot or counts['1'] == num_shot:
-        if counts['0'] == num_shot:
-            p0, p1 = 1, 0
-        else:
-            p0, p1 = 0, 1
-    else:
-        p0, p1 = counts['0'] / num_shot, counts['1'] / num_shot
+    p0, p1 = counts['0'] / num_shot, counts['1'] / num_shot
     phase = np.arccos(p0 - p1)
     print("Total Phase: ", phase)

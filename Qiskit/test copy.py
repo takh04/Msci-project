@@ -27,7 +27,7 @@ for i in range(legs):
         QC = QC + circuit
         t = t + dt
 st0 = Statevector.from_instruction(QC)
-print(str(np.reshape(st0, (n*2, 1))))
+print(str(np.reshape(st0, (4, 1))))
 
 f = open("result/N= " + str(N) + " tau= " + str(tau) + " Init= " + str(initial_state) + ".txt", "a")
 f.write("dmin, dmax = " + str(d_min) + ", " + str(d_max))
