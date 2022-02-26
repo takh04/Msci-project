@@ -1,0 +1,6 @@
+dmin, dmax = 0.0001, 0.9999
+N = 280
+tau = 40
+Initial State = even ground
+Final State = Statevector([ 0.0051485 +0.00181109j, -0.95322919-0.30219913j],
+            dims=(2,))
