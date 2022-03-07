@@ -5,14 +5,18 @@ initial_state: the program simulates even and odd parity hamiltonian separately.
 """
 import Parameters
 
-a, d_min, d_max, N, tau = Parameters.a, Parameters.d_min, Parameters.d_max, Parameters.N, Parameters.tau
-parameter_path, system, initial_state = Parameters.parameter_path, Parameters.system, Parameters.initial_state
+a, d_min, d_max = Parameters.a, Parameters.d_min, Parameters.d_max
+parameter_path, system = Parameters.parameter_path, Parameters.system
 
 
-def C_strength(t):
-    # Interaction strength between MZMs at given time
-    # For 4MZM: d1,d2,d3 = J01, J02, J03
-    # For 6MZM: d1,d2,d3 = J01, J12, J20
+def C_strength(t, tau):
+    """
+    :param t: interested time t
+    :param tau: period / time the system takes to evolve through 1 leg in parameter space
+    :return: coupling strength at time t for a system with period tau
+    For 4MZM: d1,d2,d3 = J01, J02, J03
+    For 6MZM: d1,d2,d3 = J01, J12, J20
+    """
     if parameter_path == 'cube':
         if t == 0:
             d1, d2, d3 = d_min, d_min, d_max
@@ -57,20 +61,19 @@ def C_strength(t):
     return d1, d2, d3
 
 
-def Hamiltonian(t):
-    d1, d2, d3 = C_strength(t)
+def Hamiltonian(t, tau):
+    """
+    :param t: interested time t
+    :param tau: period / time system takes to evolve through 1 leg in parameter space
+    :return: Hamiltonian of the even and odd parity states at time t
+    """
+    d1, d2, d3 = C_strength(t, tau)
     if system == '4MZM':
         Heven = {"X": d2, "Y": d1, "Z": d3}
         Hodd = {"X": -d2, "Y": d1, "Z": d3}
-        if initial_state in ['even ground', 'even e1']:
-            return Heven
-        elif initial_state in ['odd ground', 'odd e1']:
-            return Hodd
-
     elif system == '6MZM':
         Heven = {"ZZ": a, "IZ": a, "ZI": a, "XY": d1, "ZY": d2, "YI": d3}
         Hodd = {"ZZ": -a, "IZ": a, "ZI": a, "YX": d1, "IY": d2, "YZ": -d3}
-        if initial_state in ['even ground', 'even e2']:
-            return Heven
-        elif initial_state in ['odd e1', 'odd e3']:
-            return Hodd
+
+    return Heven, Hodd
+
