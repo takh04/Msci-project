@@ -21,7 +21,7 @@ d_max = 0.9999
 a = 1
 parameter_path = 'cube'
 system = '6MZM'
-initial_state = 'odd g'
+initial_state = 'odd e1'
 loops = 1
 
 
