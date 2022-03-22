@@ -28,6 +28,8 @@ if system == '4MZM':
 elif system == '6MZM':
     n = 2
 
+if initial_state == 'even + odd':
+    n = n + 1
 
 def circuit(tau, N, phase_estimation=False, statevector=False, proj_meas=False, params=[0,0]):
 
@@ -45,7 +47,12 @@ def circuit(tau, N, phase_estimation=False, statevector=False, proj_meas=False, 
                         H = H_even if initial_state in initial_state_even else H_odd
                         circuit = Evolution.hamiltonian_simulation(H, qbit, control_qubit=ctrlbit[0], t=dt)
                     elif statevector:
-                        H = H_even if initial_state in initial_state_even else H_odd
+                        if initial_state in initial_state_even:
+                            H = H_even
+                        elif initial_state in initial_state_odd:
+                            H = H_odd
+                        else:
+                            H = H
                         circuit = Evolution.hamiltonian_simulation(H, qbit, t=dt)
                     QC += circuit
                     t += dt
