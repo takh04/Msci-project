@@ -6,6 +6,7 @@ can be found in https://github.com/DavitKhach/quantum-algorithms-tutorials/blob/
 
 from qiskit import QuantumCircuit, QuantumRegister
 import numpy as np
+import Parameters
 
 
 def exp_all_z(circuit, quantum_register, pauli_idexes, control_qubit=None, t=1):
@@ -109,7 +110,10 @@ def hamiltonian_simulation(hamiltonian, quantum_register=None, control_qubit=Non
 
     for pauli in hamiltonian:
         weight = hamiltonian[pauli]
-        if np.abs(weight * delta_t) > 10**(-6):
+        if Parameters.real_device:
+            if np.abs(weight * delta_t) > 10**(-6):
+                exp_delta_t += exp_pauli(pauli, quantum_register, control_qubit, weight * delta_t)
+        else:
             exp_delta_t += exp_pauli(pauli, quantum_register, control_qubit, weight * delta_t)
 
     for i in range(trotter_number):
