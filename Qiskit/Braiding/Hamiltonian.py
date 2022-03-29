@@ -78,5 +78,13 @@ def Hamiltonian(t, tau):
         H_even = {"ZZ": a, "IZ": a, "ZI": a, "YX": d1, "IY": d2, "YZ": d3}
         H_odd = {"ZZ": -a, "IZ": a, "ZI": a, "YX": d1, "IY": d2, "YZ": d3}
         H = {"ZII": a, "IZI": a, "IIZ": a, "YXI": d1, "IYX": d2, "YZX": d3}
-    return H, H_even, H_odd
+
+    initial_state_even = ["even g", "even e1", "even e2", "even e3"]
+    initial_state_odd = ["odd g", "odd e1", "odd e2", "odd e3"]
+    if Parameters.initial_state in initial_state_even:
+        return H_even
+    elif Parameters.initial_state in initial_state_odd:
+        return H_odd
+    else:
+        return H
 
